@@ -1,0 +1,67 @@
+
+For the script to work you should:
+	- make two separate directories "prosjekt" and "prosjekt-host2022" in path $HOME.
+	(On Linux, $HOME should be the default)
+	The scripts contains working with the absolute path with $HOME. Example: "bash $HOME/prosjekt/scraping-script.sh"
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+I have made in total 6 scripts.
+Three of them are the compulsary ones:
+- "scraping-script.sh"
+	- This script retrieves meteorological data from six cities in Norway and stores it in text files. 
+	  It gathers temperature, precipitation, and humidity data and saves it along with the date and time of the session. 
+	  It also creates a new directory labeled with the date and time the script is run.
+ 
+- "pages-script.sh"
+	- This script creates a new folder based on the current date and time and stores a HTML file for each file found in the scraped-weather folder. 
+	  Each HTML file contains the weather forecast for the city listed in the file, along with the temperatures, precipitation and humidity. 
+	  The HTML files are stored in the new folder.
+
+- "overview-script.sh"
+	- This script scrapes weather data from 6 cities in Norway using the API from met.no and writes it to HTML files. 
+	  It also writes a summary of the data to an index.html. 
+	  The summary includes the city name, precipitation, and the temperatures for the current hour and the next two hours. 
+	  It only scrapes data from Kristiansand on even days of the month.
+
+one is for running all the scripts needed:
+- "execute-scripts.sh"
+	- This script runs three other scripts that scrape weather data from the web, create html pages for each city, 
+	  generate an overview page for all cities and send a notification about the weather in each city. 
+	  It also deletes weather data and html pages related to Kristiansand on odd days of the month.
+
+ one for the optional script for the ntfy service
+- "notification-script.sh"
+	- if subscribed to "idg1100-chrisng", you will get a summary of each city's weather forecast.
+
+and one for the repo update script
+- "repo-update-script"
+	- This script creates two folders, "git-scraped-weather" and "git-cities", and moves them to the "prosjekt-host2022" directory. 
+	  It then copies the contents of the "scraped-weather" and "cities" folders from the "prosjekt" directory and moves them to the newly created folders. 
+	  Finally, it commits the changes to git and pushes the updates. It then deletes the "git-scraped-weather" and "git-cities" folders from "prosjekt".
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Optional features implemented (1 star):
+- The ntfy notification script as mentioned above
+- On even days, also scrape for Kristiansand. (Can be found in "scraping-script.sh")
+	- NOTE: the delivery zip does not contain files (txt and html) for Kristiand, because I scraped it on an odd day. 
+	  But you can look for folders with even days my GitLab to find those files for Kristiansand. 
+	  (Link to GitLab centralized repository: "https://gitlab.stud.idi.ntnu.no/chrisng/prosjekt-host2022/-/tree/main")
+- Also retreieve humidity for each city, and added as a seventh line. (Can be found in "scraping-script")
+- Show the current temperature and forecast after the city name (Can be found in "overview-script.sh")
+- Create a systemd timer unit (two files) instead of a crontab entry. 
+	- Systemd timer is set to run one minute after boot.
+	- (Crontab entry: "0 */6 * * * /bin/sh $HOME/prosjekt/execute-scripts.sh")
+
+Optional features implemented (2 stars):
+- Repo update script
+(Link to GitLab centralized repository: "https://gitlab.stud.idi.ntnu.no/chrisng/prosjekt-host2022/-/tree/main")
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+I have a folder "other" where you can find file content for 
+	- /etc/nginx/sites-available/default (File: "nginx-sites-available") 
+	- /etc/systemd/system/[filename].service (File: "systemd-service")
+	- /etc/systemd/system/[filename].timer (File: "systemd-timer")

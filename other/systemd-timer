@@ -1,0 +1,12 @@
+[Unit]
+Description=1 star optional task, systemd timer
+
+[Timer]
+Unit=systemd-timer-script.service
+OnBootSec=1min
+#2 ways of doing this, I will go for the first one
+OnUnitActiveSec=6h
+#OnCalender=*-*-* */6:00:00
+
+[Install]
+WantedBy=timers.target

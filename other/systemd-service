@@ -1,0 +1,7 @@
+[Unit]
+Description= 1 star optional task, systemd timer
+
+[Service]
+Type=simple
+ExecStart=/home/christopherngo/prosjekt/execute-scripts.sh
+User=root
